@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>English Seekho</title>
+<style>
+:root{--bg:#fbf7ee;--ink:#1d2a3a;--mute:#5d6b7a;--card:#fff;--line:#e4dccb;--main:#1f5eff;--ok:#12805c;--bad:#c2410c;--sun:#ffc83d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a26;--ink:#eef2f7;--mute:#9fb0c3;--card:#1b2635;--line:#2d3b4f;--main:#6c93ff;--ok:#43d6a0;--bad:#ff9a62}}
+:root[data-theme="dark"]{--bg:#121a26;--ink:#eef2f7;--mute:#9fb0c3;--card:#1b2635;--line:#2d3b4f;--main:#6c93ff;--ok:#43d6a0;--bad:#ff9a62}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 "Hind","Segoe UI",system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font:800 28px/1.1 "Poppins","Segoe UI",sans-serif;margin:8px 0 2px}
+.sub{color:var(--mute);margin:0 0 18px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px}
+.tabs button{flex:none;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:99px;font:inherit;font-weight:600;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--main);border-color:var(--main);color:#fff}
+.card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:22px 18px;text-align:center}
+.count{color:var(--mute);font-size:14px}
+.en{font:700 28px/1.25 "Poppins","Segoe UI",sans-serif;margin:10px 0 6px}
+.hi{color:var(--mute);margin:0 0 18px}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+button.act{border:0;border-radius:14px;padding:14px 20px;font:inherit;font-weight:700;cursor:pointer;color:#fff;background:var(--main);min-width:140px}
+button.act.talk{background:var(--ok);color:#06241a}
+@media (prefers-color-scheme:light){button.act.talk{color:#fff}}
+button.act.talk.on{background:var(--bad);color:#fff}
+button.ghost{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:14px;padding:10px 16px;font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.res{margin-top:18px;min-height:90px}
+.score{font:800 40px/1 "Poppins",sans-serif}
+.words{margin-top:8px;font-size:20px}
+.words span{padding:1px 6px;border-radius:6px;margin:0 2px;display:inline-block}
+.w-ok{background:rgba(18,128,92,.18);color:var(--ok)}
+.w-bad{background:rgba(194,65,12,.18);color:var(--bad)}
+.heard{color:var(--mute);font-size:15px;margin-top:8px}
+.nav{display:flex;justify-content:space-between;margin-top:16px}
+.note{margin-top:18px;color:var(--mute);font-size:14px}
+.stats{color:var(--mute);font-size:15px;margin:-8px 0 12px}
+.opt{display:block;width:100%;margin:8px 0;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+.opt.good{border-color:var(--ok);background:rgba(18,128,92,.2)}
+.opt.bad{border-color:var(--bad);background:rgba(194,65,12,.2)}
+#quiz .ghost{margin-top:10px}
+textarea{width:100%;border:2px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:var(--bg);color:var(--ink);margin-bottom:12px;resize:vertical}
+details{background:var(--card);border:2px solid var(--line);border-radius:16px;margin-bottom:10px;padding:2px 16px}
+summary{cursor:pointer;font-weight:700;padding:12px 0;font-size:18px}
+details[open] summary{color:var(--main)}
+.ex{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.ex div{flex:1}.ex b{display:block}.ex small{color:var(--mute);font-size:15px}
+.ex button{flex:none;border:0;background:var(--main);color:#fff;border-radius:10px;padding:8px 12px;font:inherit;font-weight:600;cursor:pointer}
+.exp{padding:0 0 10px;line-height:1.7}
+.exp em{font-style:normal;font-weight:700;color:var(--main)}
+.warn{background:rgba(255,200,61,.25);border-radius:12px;padding:10px 12px;margin-bottom:14px;font-size:15px;display:none}
+</style>
+</head>
+<body>
+<main>
+<h1>English Seekho</h1>
+<p class="sub">Suno, phir bolo. App aapko bolke bhi batayega ki kya sahi tha.</p>
+<div class="warn" id="warn">Bolne wali practice ke liye Google Chrome (Android ya computer) use karo. Suna to sab jagah chalega.</div>
+<div class="stats" id="stats"></div>
+<div class="tabs" id="modes"><button id="m1" aria-pressed="true">Practice</button><button id="m2" aria-pressed="false">Grammar</button><button id="m3" aria-pressed="false">Quiz</button><button id="m4" aria-pressed="false" hidden>Translate</button></div>
+<div id="practice">
+<div class="tabs" id="tabs"></div>
+<section class="card">
+  <div class="count" id="count"></div>
+  <div class="en" id="en"></div>
+  <p class="hi" id="hi"></p>
+  <div class="row">
+    <button class="act" id="listen">Suno</button>
+    <button class="ghost" id="slow">Dheere suno</button>
+    <button class="act talk" id="talk">Bolo</button>
+  </div>
+  <div class="res" id="res" aria-live="polite"></div>
+</section>
+<div class="nav">
+  <button class="ghost" id="prev">Previous</button>
+  <button class="ghost" id="next">Next</button>
+</div>
+<p class="note">Tarika: 1) Suno 2) Wahi sentence bolo 3) Score dekho aur jo word lal ho use dobara bolo.</p>
+</div>
+<div id="grammar" hidden></div>
+<div id="quiz" hidden></div>
+<div id="trans" hidden></div>
+</main>
+<script>
+const L={
+"Roz ki baat":[["Hello, how are you?","Hello, aap kaise ho?"],["I am fine, thank you.","Main theek hoon, shukriya."],["My name is Rahul.","Mera naam Rahul hai."],["I live in Delhi.","Main Delhi mein rehta hoon."],["I want to learn English.","Main English seekhna chahta hoon."],["Please speak slowly.","Please dheere boliye."],["I do not understand.","Mujhe samajh nahi aaya."],["Can you help me?","Kya aap meri madad kar sakte hain?"]],
+"Dukaan / Customer":[["How can I help you?","Main aapki kya madad kar sakta hoon?"],["This is the best price.","Yeh sabse accha daam hai."],["Please give me your phone number.","Please apna phone number dijiye."],["I will call you tomorrow.","Main kal aapko call karunga."],["We can install it today.","Hum ise aaj laga sakte hain."],["Thank you for your order.","Aapke order ke liye shukriya."]],
+"Job / Interview":[["Good morning, sir.","Good morning, sir."],["Thank you for this opportunity.","Is mauke ke liye shukriya."],["I have two years of experience.","Mere paas do saal ka experience hai."],["I am a hard working person.","Main mehnati insaan hoon."],["I can start from next Monday.","Main agle Monday se shuru kar sakta hoon."],["Can you tell me about the salary?","Kya aap salary ke baare mein bata sakte hain?"]],
+"Bazaar / Safar":[["How much is this?","Yeh kitne ka hai?"],["Please give me a discount.","Please thoda discount dijiye."],["Where is the railway station?","Railway station kahan hai?"],["Please take me to this address.","Mujhe is address par le chaliye."],["I need some water.","Mujhe thoda paani chahiye."],["What time does the shop open?","Dukaan kitne baje khulti hai?"]],
+"Phone par baat":[["Hello, who is speaking?","Hello, kaun baat kar raha hai?"],["Please hold on for a minute.","Please ek minute ruko."],["I cannot hear you clearly.","Mujhe aapki awaaz saaf nahi aa rahi."],["Can you call me back later?","Kya aap mujhe baad mein call kar sakte hain?"],["I will send you a message.","Main aapko message bhejunga."],["Thank you for calling.","Call karne ke liye shukriya."]],
+"CCTV / Business":[["We install CCTV cameras.","Hum CCTV cameras lagate hain."],["Do you need a camera for your shop?","Kya aapko apni dukaan ke liye camera chahiye?"],["It has night vision and mobile viewing.","Isme night vision aur mobile par dekhne ki suvidha hai."],["We give one year warranty.","Hum ek saal ki warranty dete hain."],["I can visit your office tomorrow.","Main kal aapke office aa sakta hoon."],["Let me give you a free quotation.","Main aapko free quotation deta hoon."],["The installation will take one day.","Installation mein ek din lagega."]],
+"Ghar / Khana":[["I am hungry.","Mujhe bhookh lagi hai."],["What would you like to eat?","Aap kya khana pasand karenge?"],["The food is very tasty.","Khana bahut swadisht hai."],["Please close the door.","Please darwaza band kar do."],["I will come back in ten minutes.","Main das minute mein wapas aata hoon."]],
+"Dost / Baatcheet":[["Nice to meet you.","Aapse milkar accha laga."],["What do you do?","Aap kya karte ho?"],["I work in Faridabad.","Main Faridabad mein kaam karta hoon."],["Let us meet tomorrow.","Kal milte hain."],["I am sorry, I am late.","Sorry, mujhe der ho gayi."],["See you soon.","Jaldi milte hain."]]
+};
+const names=Object.keys(L);let cat=names[0],i=0,rec=null,listening=false;
+const $=id=>document.getElementById(id);
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SR||!window.speechSynthesis)$("warn").style.display="block";
+function tabs(){$("tabs").innerHTML="";names.forEach(n=>{const b=document.createElement("button");b.textContent=n;b.setAttribute("aria-pressed",n===cat);b.onclick=()=>{cat=n;i=0;tabs();show()};$("tabs").appendChild(b)})}
+function cur(){return L[cat][i]}
+function show(){const[e,h]=cur();$("en").textContent=e;$("hi").textContent=h;$("count").textContent=(i+1)+" / "+L[cat].length+(P.best[cur()[0]]>=80?"   ✓ ho gaya":"");$("res").innerHTML=""}
+function say(t,rate,done){if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-IN";u.rate=rate||0.95;const v=speechSynthesis.getVoices().find(x=>/en[-_]IN/i.test(x.lang))||speechSynthesis.getVoices().find(x=>/^en/i.test(x.lang));if(v)u.voice=v;if(done)u.onend=done;speechSynthesis.speak(u)}
+const norm=s=>s.toLowerCase().replace(/[^a-z0-9\s']/g,"").split(/\s+/).filter(Boolean);
+function check(heard){const target=cur()[0],tw=norm(target),hw=norm(heard);let hit=0;const out=tw.map(w=>{const ok=hw.includes(w);if(ok)hit++;return'<span class="'+(ok?"w-ok":"w-bad")+'">'+w+'</span>'});const pct=Math.round(hit/tw.length*100);
+save(pct);const msg=pct>=90?"Bahut badhiya! Perfect.":pct>=60?"Accha tha. Lal words dobara bolo.":"Koi baat nahi. Ek baar suno aur phir bolo.";
+$("res").innerHTML='<div class="score" style="color:var(--'+(pct>=60?"ok":"bad")+')">'+pct+'%</div><div>'+msg+'</div><div class="words">'+out.join(" ")+'</div><div class="heard">Maine suna: "'+heard+'"</div>';
+const miss=tw.filter(w=>!hw.includes(w));
+say(pct>=90?"Perfect! Well done.":miss.length?"Try again. Say: "+miss.slice(0,3).join(", "):"Good.",0.9)}
+$("listen").onclick=()=>say(cur()[0],0.95);
+$("slow").onclick=()=>say(cur()[0],0.6);
+$("talk").onclick=()=>{
+ if(!SR){$("res").textContent="Is browser mein bolna support nahi hai. Chrome use karo.";return}
+ if(listening){rec&&rec.stop();return}
+ speechSynthesis.cancel();rec=new SR();rec.lang="en-IN";rec.interimResults=false;rec.maxAlternatives=1;
+ rec.onstart=()=>{listening=true;$("talk").classList.add("on");$("talk").textContent="Sun raha hoon... (rokne ke liye dabao)";$("res").textContent=""};
+ rec.onend=()=>{listening=false;$("talk").classList.remove("on");$("talk").textContent="Bolo"};
+ rec.onerror=e=>{$("res").textContent=e.error==="not-allowed"?"Microphone ki permission do, phir dobara try karo.":"Awaaz nahi aayi. Dobara bolo."};
+ rec.onresult=e=>check(e.results[0][0].transcript);
+ try{rec.start()}catch(_){}
+};
+$("next").onclick=()=>{i=(i+1)%L[cat].length;show();say(cur()[0])};
+$("prev").onclick=()=>{i=(i-1+L[cat].length)%L[cat].length;show();say(cur()[0])};
+if(window.speechSynthesis)speechSynthesis.onvoiceschanged=()=>{};
+const G=[
+["1. I am, You are, He is (am / is / are)","<em>am / is / are</em> ka matlab hai <em>hoon / hai / ho</em>. Ye sabse zaroori words hain.<br>I + <em>am</em> (main hoon)<br>He, She, It + <em>is</em> (wo hai)<br>You, We, They + <em>are</em> (aap / hum / wo log hain)<br>\"I am\" ka matlab hai <em>main hoon</em>. Isse apne baare mein batate hain: naam, kaam, haal.",[["I am a technician.","Main technician hoon."],["He is my friend.","Wo mera dost hai."],["She is at home.","Wo ghar par hai."],["You are late.","Aap late ho."],["We are ready.","Hum taiyar hain."],["They are in Delhi.","Wo log Delhi mein hain."]]],
+["2. This, That, These, Those","<em>This</em> = ye (paas, ek). <em>That</em> = wo (door, ek). <em>These</em> = ye sab (paas, kai). <em>Those</em> = wo sab (door, kai).",[["This is my phone.","Ye mera phone hai."],["That is your shop.","Wo aapki dukaan hai."],["These are new cameras.","Ye naye camera hain."],["Those are old wires.","Wo purane taar hain."]]],
+["3. Have / Has (mere paas hai)","<em>have</em> = paas hai. I, You, We, They ke saath <em>have</em>. He, She, It ke saath <em>has</em>.",[["I have a bike.","Mere paas bike hai."],["She has two children.","Uske do bachche hain."],["We have a shop.","Hamari dukaan hai."],["He has no time.","Uske paas time nahi hai."]]],
+["4. Present Simple (roz ki aadat)","Jo kaam roz ya aadat se hota hai. I, You, We, They ke saath verb waisa hi: <em>I work</em>. He, She, It ke saath verb mein <em>s</em> lagta hai: <em>He works</em>.",[["I work every day.","Main roz kaam karta hoon."],["He works in a bank.","Wo bank mein kaam karta hai."],["They go to school.","Wo log school jaate hain."],["She drinks tea.","Wo chai peeti hai."]]],
+["5. Present Continuous (abhi ho raha hai)","Jo kaam abhi chal raha hai. Formula: <em>am / is / are + verb + ing</em>.",[["I am eating food.","Main khana kha raha hoon."],["She is talking on the phone.","Wo phone par baat kar rahi hai."],["They are working now.","Wo log abhi kaam kar rahe hain."],["It is raining.","Baarish ho rahi hai."]]],
+["6. Past (jo ho chuka)","<em>am / is</em> ka past <em>was</em>, <em>are</em> ka past <em>were</em>. Zyada verbs mein <em>ed</em> lagta hai (work, worked), kuch badal jaate hain (go, went; eat, ate; see, saw).",[["I was at home.","Main ghar par tha."],["They were happy.","Wo log khush the."],["I worked yesterday.","Maine kal kaam kiya."],["He went to Delhi.","Wo Delhi gaya."],["We ate rice.","Humne chawal khaye."]]],
+["7. Future (aage hoga)","<em>will + verb</em> = karunga / karega. <em>going to + verb</em> = karne wala hoon (pakka plan).",[["I will call you tomorrow.","Main kal call karunga."],["She will come soon.","Wo jaldi aayegi."],["I am going to buy a phone.","Main phone kharidne wala hoon."],["It will not rain today.","Aaj baarish nahi hogi."]]],
+["8. Can, Could, Should, Must","<em>can</em> = sakta hoon. <em>could</em> = sakta tha ya politely poochna. <em>should</em> = chahiye (salah). <em>must</em> = zaroor karna hai. Inke baad seedha verb aata hai, s ya ing nahi.",[["I can speak English.","Main English bol sakta hoon."],["Could you help me, please?","Kya aap meri madad kar sakte hain?"],["You should sleep early.","Aapko jaldi sona chahiye."],["We must follow the rules.","Humein rules maanne hi hain."]]],
+["9. Sawal (What, Where, When, Why, How, Who)","<em>What</em> = kya. <em>Where</em> = kahan. <em>When</em> = kab. <em>Why</em> = kyun. <em>How</em> = kaise. <em>Who</em> = kaun. <em>Which</em> = kaun sa. <em>How much</em> = kitna.",[["What is your name?","Aapka naam kya hai?"],["Where do you live?","Aap kahan rehte ho?"],["When will you come?","Aap kab aaoge?"],["Why are you late?","Aap late kyun ho?"],["How are you?","Aap kaise ho?"],["How much is this?","Ye kitne ka hai?"]]],
+["10. Na karna (Negative)","<em>am / is / are</em> ke baad <em>not</em> lagao. Baaki verbs mein <em>do not (don't)</em> ya <em>does not (doesn't)</em> lagao. Past mein <em>did not (didn't)</em>.",[["I am not tired.","Main thaka nahi hoon."],["He does not smoke.","Wo smoking nahi karta."],["I do not know.","Mujhe nahi pata."],["We did not go.","Hum nahi gaye."]]],
+["11. Pronouns (I, me, my, mine)","I = main. Me = mujhe / mujhko. My = mera. Mine = mera wala. You = aap. Your = aapka. He = wo (ladka). His = uska. She = wo (ladki). Her = uski. We = hum. Our = hamara. They = wo log. Their = unka.",[["Give me water.","Mujhe paani do."],["This is my bag.","Ye mera bag hai."],["This bag is mine.","Ye bag mera hai."],["Her phone is new.","Uska phone naya hai."],["Our shop is big.","Hamari dukaan badi hai."]]],
+["12. A, An, The","<em>a</em> = ek (consonant awaaz se pehle: a book). <em>an</em> = ek (vowel awaaz se pehle: an apple). <em>the</em> = wahi khaas cheez jiske baare mein baat ho rahi hai.",[["I have a camera.","Mere paas ek camera hai."],["She eats an apple.","Wo ek seb khati hai."],["The camera is new.","Wo camera naya hai."],["I need an hour.","Mujhe ek ghanta chahiye."]]],
+["13. In, On, At (jagah aur time)","<em>in</em> = andar / bade jagah, mahina, saal (in Delhi, in June). <em>on</em> = upar, din, tareekh (on the table, on Monday). <em>at</em> = chhoti jagah, ghadi ka time (at home, at 5 o'clock).",[["I live in Delhi.","Main Delhi mein rehta hoon."],["The phone is on the table.","Phone table par hai."],["I will meet you on Monday.","Main aapse Monday ko milunga."],["We open at nine.","Hum nau baje kholte hain."]]],
+["14. Plural (ek se zyada)","Zyada tar words mein <em>s</em> lagta hai: camera, cameras. <em>s, x, ch, sh</em> par end ho toh <em>es</em>: box, boxes. Kuch alag: man, men; child, children; person, people.",[["one camera, two cameras","ek camera, do camera"],["one box, three boxes","ek dabba, teen dabbe"],["one child, four children","ek bachcha, chaar bachche"],["many people","bahut log"]]],
+["15. Kuch zaroori words (Connectors)","<em>and</em> = aur. <em>but</em> = lekin. <em>or</em> = ya. <em>because</em> = kyunki. <em>so</em> = isliye. <em>if</em> = agar. <em>then</em> = phir.",[["I like tea and coffee.","Mujhe chai aur coffee pasand hai."],["I am tired but happy.","Main thaka hoon lekin khush hoon."],["I stayed home because it rained.","Main ghar par raha kyunki baarish thi."],["If you call, I will come.","Agar aap call karoge, main aaunga."]]]
+];
+function gram(){const g=$("grammar");g.innerHTML="";G.forEach((t,k)=>{const d=document.createElement("details");const s=document.createElement("summary");s.textContent=t[0];d.appendChild(s);const e=document.createElement("div");e.className="exp";e.innerHTML=t[1];d.appendChild(e);t[2].forEach(x=>{const r=document.createElement("div");r.className="ex";const m=document.createElement("div");const b=document.createElement("b");b.textContent=x[0];const sm=document.createElement("small");sm.textContent=x[1];m.appendChild(b);m.appendChild(sm);const bt=document.createElement("button");bt.textContent="Suno";bt.onclick=()=>say(x[0],0.9);r.appendChild(m);r.appendChild(bt);d.appendChild(r)});g.appendChild(d)})}
+let P={best:{},days:[]};
+try{P=JSON.parse(localStorage.getItem("es_prog"))||P}catch(_){}
+const ALL=[].concat(...Object.values(L));
+const day=x=>x.toISOString().slice(0,10);
+function persist(){try{localStorage.setItem("es_prog",JSON.stringify(P))}catch(_){}}
+function streak(){let d=new Date(),n=0;if(!P.days.includes(day(d)))d.setDate(d.getDate()-1);while(P.days.includes(day(d))){n++;d.setDate(d.getDate()-1)}return n}
+function stats(){const done=ALL.filter(x=>P.best[x[0]]>=80).length;$("stats").textContent="Seekhe: "+done+" / "+ALL.length+" sentences   |   Streak: "+streak()+" din"}
+function mark(){const t=day(new Date());if(!P.days.includes(t))P.days.push(t);persist();stats()}
+function save(pct){const s=cur()[0];if(!(P.best[s]>=pct))P.best[s]=pct;mark()}
+let Q=null,qs={a:0,n:0};
+const shuf=a=>a.slice().sort(()=>Math.random()-.5);
+function qNew(){const q=ALL[Math.floor(Math.random()*ALL.length)];const opts=shuf([q,...shuf(ALL.filter(x=>x[1]!==q[1])).slice(0,2)]);Q={q,opts,done:false};qDraw();setTimeout(()=>say(q[0],0.9),200)}
+function qDraw(){const z=$("quiz");z.innerHTML="";const c=document.createElement("section");c.className="card";
+const h=document.createElement("div");h.className="count";h.id="qcount";h.textContent="Sahi: "+qs.a+" / "+qs.n;
+const p=document.createElement("p");p.className="hi";p.textContent="Sentence suno aur uska sahi matlab chuno";
+const b=document.createElement("button");b.className="act";b.textContent="Dobara suno";b.onclick=()=>say(Q.q[0],0.9);
+c.append(h,p,b);
+Q.opts.forEach(o=>{const x=document.createElement("button");x.className="opt";x.textContent=o[1];x.onclick=()=>pick(o,x);c.appendChild(x)});
+const m=document.createElement("div");m.className="res";m.id="qres";c.appendChild(m);
+const nx=document.createElement("button");nx.className="ghost";nx.textContent="Next";nx.onclick=qNew;c.appendChild(nx);z.appendChild(c)}
+function pick(o,x){if(Q.done)return;Q.done=true;qs.n++;const ok=o===Q.q;if(ok)qs.a++;x.classList.add(ok?"good":"bad");
+[...document.querySelectorAll(".opt")].find(e=>e.textContent===Q.q[1]).classList.add("good");
+$("qres").textContent=(ok?"Sahi! ":"Galat. Sahi jawab upar hara hai. ")+Q.q[0];$("qcount").textContent="Sahi: "+qs.a+" / "+qs.n;
+say(ok?"Correct. "+Q.q[0]:"Not correct. "+Q.q[0],0.9);mark()}
+function mode(m){$("practice").hidden=m!==1;$("grammar").hidden=m!==2;$("quiz").hidden=m!==3;$("trans").hidden=m!==4;[1,2,3,4].forEach(k=>$("m"+k).setAttribute("aria-pressed",m===k));if(window.speechSynthesis)speechSynthesis.cancel();if(m===3)qNew();if(m===4&&!$("tin"))tbuild();stats()}
+$("m1").onclick=()=>mode(1);$("m2").onclick=()=>mode(2);$("m3").onclick=()=>mode(3);$("m4").onclick=()=>mode(4);
+let SM=null;$("m4").hidden=false;
+if(window.claude&&claude.use)claude.use("sample").then(x=>{SM=x;if(x)$("m4").hidden=false}).catch(()=>{});
+function tbuild(){const z=$("trans");z.innerHTML="";const c=document.createElement("section");c.className="card";
+const p=document.createElement("p");p.className="hi";p.textContent="Hindi ya Hinglish mein kuch bhi likho, English mil jayegi";
+const t=document.createElement("textarea");t.id="tin";t.rows=3;t.placeholder="Jaise: mujhe kal chhutti chahiye";
+const b=document.createElement("button");b.className="act";b.textContent="English banao";b.onclick=tgo;
+const r=document.createElement("div");r.className="res";r.id="tout";r.setAttribute("aria-live","polite");
+c.append(p,t,b,r);z.appendChild(c)}
+async function fb(v){const dev=/[\u0900-\u097F]/;const bad=t=>!t||dev.test(t)||/MYMEMORY WARNING/i.test(t);let t="";
+try{const j=await(await fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=hi&tl=en&dt=t&q="+encodeURIComponent(v))).json();t=j[0].map(x=>x[0]).join("")}catch(_){}
+if(bad(t)){try{const j=await(await fetch("https://api.mymemory.translated.net/get?langpair=hi%7Cen&q="+encodeURIComponent(v))).json();t=j.responseData.translatedText}catch(_){}}
+if(bad(t))throw 0;return{english:t}}
+async function tgo(){const v=$("tin").value.trim();if(!v)return;const o=$("tout");o.textContent="Soch raha hoon...";
+try{const r=SM?await SM.json("Translate this Hindi or Hinglish text into natural spoken English for a beginner learner. Return only JSON: {\"english\":\"simple everyday English\",\"polite\":\"a more polite or formal version\",\"tip\":\"one short tip in Hinglish about a word or grammar used\"}. Text: "+v,{cache:false}):await fb(v);
+o.innerHTML="";[["Simple",r.english],["Polite",r.polite]].forEach(x=>{if(!x[1])return;const d=document.createElement("div");d.className="ex";const m=document.createElement("div");const bb=document.createElement("b");bb.textContent=x[1];const sm=document.createElement("small");sm.textContent=x[0];m.append(bb,sm);const bt=document.createElement("button");bt.textContent="Suno";bt.onclick=()=>say(x[1],0.9);d.append(m,bt);o.appendChild(d)});
+if(r.tip){const n=document.createElement("div");n.className="heard";n.textContent=r.tip;o.appendChild(n)}
+if(r.english)say(r.english,0.9)}catch(e){o.textContent=e&&e.code==="not_granted"?"Permission do, phir dobara dabao.":"Abhi translate nahi ho paaya. Thodi der baad try karo."}}
+gram();tabs();show();stats();
+</script>
+</body>
+</html>
